@@ -36,6 +36,8 @@ class ToDo {
 class ToDoNotifier extends StateNotifier<List<ToDo>> {
   ToDoNotifier([List<ToDo>? todo]) : super(todo ?? []);
 
+
+  //update if task is completed or not
   void update(ToDo todo, bool isComplete) {
     state = state
         .map((thisTodo) =>
@@ -43,6 +45,7 @@ class ToDoNotifier extends StateNotifier<List<ToDo>> {
         .toList();
   }
 
+  //add new todo
   void add(ToDo todo) {
     state = [
       ...state,
@@ -53,6 +56,7 @@ class ToDoNotifier extends StateNotifier<List<ToDo>> {
     ];
   }
 
+  //editing existing todo
   void edit(ToDo updatedToDo) {
     state = [
       for (final todos in state)
@@ -63,6 +67,7 @@ class ToDoNotifier extends StateNotifier<List<ToDo>> {
     ];
   }
 
+  //removing exiting todo
   void remove(ToDo target) {
     state = state.where((todo) => todo.id != target.id).toList();
   }
