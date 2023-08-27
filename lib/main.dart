@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'ToDo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.deepOrange,
+          primarySwatch: Colors.red,
         ),
         useMaterial3: true,
       ),
