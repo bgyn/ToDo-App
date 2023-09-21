@@ -30,7 +30,16 @@ class ToDoList extends ConsumerWidget {
                 ref.read(allTodoProvider.notifier).remove(todo);
               },
               child: ListTile(
-                title: Text(todo.description),
+                title: Text(
+                  todo.description,
+                  style: todo.isComplete
+                      ? const TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                        )
+                      : const TextStyle(
+                          decoration: TextDecoration.none,
+                        ),
+                ),
                 trailing: IconButton(
                   onPressed: () {
                     final isComplete = !todo.isComplete;
