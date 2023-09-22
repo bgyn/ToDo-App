@@ -67,7 +67,7 @@ class ToDoNotifier extends StateNotifier<List<ToDo>> {
     ];
   }
 
-  //removing exiting todo
+  //removing existing todo
   void remove(ToDo target) {
     state = state.where((todo) => todo.id != target.id).toList();
   }

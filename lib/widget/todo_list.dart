@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/screens/home_page.dart';
+import 'package:todo_app/theme/provider/app_theme_provider.dart';
 import 'package:todo_app/widget/show_dialog.dart';
 
 class ToDoList extends ConsumerWidget {
@@ -13,6 +14,7 @@ class ToDoList extends ConsumerWidget {
     final todos = ref.watch(provdier);
     return Expanded(
       child: ListView.builder(
+        padding: const EdgeInsets.all(10),
         itemCount: todos.length,
         itemBuilder: (BuildContext context, int index) {
           final todo = todos.elementAt(index);
@@ -22,6 +24,7 @@ class ToDoList extends ConsumerWidget {
               ref.read(allTodoProvider.notifier).edit(updatedToDo);
             }
           }, child: Consumer(builder: ((context, ref, child) {
+            final isDarkMode = ref.watch(appThemeProvider);
             ref.watch(allTodoProvider);
             return Dismissible(
               key: ValueKey(todo.id),
@@ -29,25 +32,40 @@ class ToDoList extends ConsumerWidget {
               onDismissed: (direction) {
                 ref.read(allTodoProvider.notifier).remove(todo);
               },
-              child: ListTile(
-                title: Text(
-                  todo.description,
-                  style: todo.isComplete
-                      ? const TextStyle(
-                          decoration: TextDecoration.lineThrough,
-                        )
-                      : const TextStyle(
-                          decoration: TextDecoration.none,
-                        ),
-                ),
-                trailing: IconButton(
-                  onPressed: () {
-                    final isComplete = !todo.isComplete;
-                    ref.read(allTodoProvider.notifier).update(todo, isComplete);
-                  },
-                  icon: todo.isComplete
-                      ? const Icon(Icons.check_box)
-                      : const Icon(Icons.check_box_outline_blank),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isDarkMode ? Colors.grey.shade900 : Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    title: Text(todo.description,
+                        style: todo.isComplete
+                            ? Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  decoration: TextDecoration.lineThrough,
+                                )
+                            : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  decoration: TextDecoration.none,
+                                )),
+                    trailing: IconButton(
+                      onPressed: () {
+                        final isComplete = !todo.isComplete;
+                        ref
+                            .read(allTodoProvider.notifier)
+                            .update(todo, isComplete);
+                      },
+                      icon: todo.isComplete
+                          ? Icon(
+                              Icons.check_box,
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            )
+                          : Icon(
+                              Icons.check_box_outline_blank,
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
+                    ),
+                  ),
                 ),
               ),
             );

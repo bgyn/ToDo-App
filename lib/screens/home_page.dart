@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/model/todo_model.dart';
+import 'package:todo_app/theme/provider/app_theme_provider.dart';
 import 'package:todo_app/widget/show_dialog.dart';
 import 'package:todo_app/widget/status_filter.dart';
 import 'package:todo_app/widget/todo_list.dart';
@@ -27,16 +28,37 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = ref.watch(appThemeProvider);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "ToDo",
-          style: TextStyle(
-            color: Colors.white,
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                title: const Text("Theme"),
+                trailing: Switch(
+                    activeColor: Colors.grey,
+                    value: isDarkMode,
+                    onChanged: (_) {
+                      ref.watch(appThemeProvider.notifier).changeTheme();
+                    }),
+              ),
+            ],
           ),
         ),
-        backgroundColor: Colors.deepOrange,
+      ),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "ToDo",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        // backgroundColor: Colors.deepOrange,
       ),
       body: SafeArea(
         child: SizedBox(
@@ -61,14 +83,23 @@ class HomePage extends ConsumerWidget {
           ),
         ),
       ),
-      floatingActionButton: IconButton(
-        onPressed: () async {
-          final todo = await createOrEditToDO(context);
-          if (todo != null) {
-            ref.read(allTodoProvider.notifier).add(todo);
-          }
-        },
-        icon: const Icon(Icons.add),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColorLight,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: IconButton(
+          onPressed: () async {
+            final todo = await createOrEditToDO(context);
+            if (todo != null) {
+              ref.read(allTodoProvider.notifier).add(todo);
+            }
+          },
+          icon: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
