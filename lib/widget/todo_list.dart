@@ -40,14 +40,25 @@ class ToDoList extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ListTile(
-                    title: Text(todo.description,
-                        style: todo.isComplete
-                            ? Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  decoration: TextDecoration.lineThrough,
-                                )
-                            : Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  decoration: TextDecoration.none,
-                                )),
+                    title: Text(
+                      todo.description,
+                      style: todo.isComplete
+                          ? Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                decoration: TextDecoration.lineThrough,
+                                fontSize: 16,
+                              )
+                          : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                decoration: TextDecoration.none,
+                                fontSize: 16,
+                              ),
+                    ),
+                    subtitle: Text(
+                      todo.dateTime,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontSize: 12, color: Colors.grey.shade600),
+                    ),
                     trailing: IconButton(
                       onPressed: () {
                         final isComplete = !todo.isComplete;

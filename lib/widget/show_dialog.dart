@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/model/date_time.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/theme/provider/app_theme_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -36,7 +37,6 @@ Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
                       color: isDarkMode ? Colors.white : Colors.black,
                     ),
                   ),
-                  
                 ),
                 onChanged: (value) => description = value,
               )
@@ -61,10 +61,13 @@ Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
                   }
                   //creating new todo
                   else {
-                    Navigator.of(context).pop(ToDo(
-                      id: _uuid.v4(),
-                      description: description!,
-                    ));
+                    Navigator.of(context).pop(
+                      ToDo(
+                        id: _uuid.v4(),
+                        description: description!,
+                        dateTime: getDateTime(),
+                      ),
+                    );
                   }
                 } else {
                   Navigator.of(context).pop();

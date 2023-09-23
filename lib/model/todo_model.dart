@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_app/model/date_time.dart';
 import 'package:uuid/uuid.dart';
 
 @immutable
@@ -7,19 +8,26 @@ class ToDo {
   final String id;
   final String description;
   final bool isComplete;
+  final String dateTime;
   ToDo({
     String? id,
     required this.description,
     this.isComplete = false,
+    required this.dateTime,
   }) : id = id ?? const Uuid().v4();
 
-  ToDo copy(bool isComplete) =>
-      ToDo(id: id, description: description, isComplete: isComplete);
-
-  ToDo update({String? description}) => ToDo(
-      description: description ?? this.description,
+  ToDo copy(bool isComplete) => ToDo(
+      id: id,
+      description: description,
       isComplete: isComplete,
-      id: id);
+      dateTime: dateTime);
+
+  ToDo update({String? description, String? dateTime}) => ToDo(
+        description: description ?? this.description,
+        isComplete: isComplete,
+        id: id,
+        dateTime: dateTime ?? this.dateTime,
+      );
 
   @override
   String toString() =>
@@ -36,12 +44,11 @@ class ToDo {
 class ToDoNotifier extends StateNotifier<List<ToDo>> {
   ToDoNotifier([List<ToDo>? todo]) : super(todo ?? []);
 
-
   //update if task is completed or not
   void update(ToDo todo, bool isComplete) {
     state = state
         .map((thisTodo) =>
-            thisTodo.id == todo.id ? thisTodo.copy(isComplete) : thisTodo)
+            thisTodo.id == todo.id ? thisTodo.copy(isComplete) : thisTodo,)
         .toList();
   }
 
@@ -52,6 +59,7 @@ class ToDoNotifier extends StateNotifier<List<ToDo>> {
       ToDo(
         // id: _uuid.v4(),
         description: todo.description,
+        dateTime: getDateTime(),
       )
     ];
   }
@@ -61,7 +69,10 @@ class ToDoNotifier extends StateNotifier<List<ToDo>> {
     state = [
       for (final todos in state)
         if (todos.id == updatedToDo.id)
-          ToDo(description: updatedToDo.description, id: updatedToDo.id)
+          ToDo(
+              description: updatedToDo.description,
+              id: updatedToDo.id,
+              dateTime: getDateTime())
         else
           todos,
     ];
@@ -71,4 +82,6 @@ class ToDoNotifier extends StateNotifier<List<ToDo>> {
   void remove(ToDo target) {
     state = state.where((todo) => todo.id != target.id).toList();
   }
+
+
 }
