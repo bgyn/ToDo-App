@@ -43,11 +43,11 @@ class ToDoList extends ConsumerWidget {
                     title: Text(
                       todo.description,
                       style: todo.isComplete
-                          ? Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          ? Theme.of(context).textTheme.titleMedium?.copyWith(
                                 decoration: TextDecoration.lineThrough,
                                 fontSize: 16,
                               )
-                          : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          : Theme.of(context).textTheme.titleMedium?.copyWith(
                                 decoration: TextDecoration.none,
                                 fontSize: 16,
                               ),

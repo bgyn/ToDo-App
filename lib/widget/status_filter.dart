@@ -12,6 +12,7 @@ class StatusFilter extends StatelessWidget {
     return Consumer(builder: (context, ref, child) {
       final isDarkMode = ref.watch(appThemeProvider);
       return DropdownButton(
+        padding: const EdgeInsets.all(5),
         dropdownColor:
             isDarkMode ? const Color.fromARGB(255, 41, 41, 41) : Colors.white,
         borderRadius: BorderRadius.circular(20),

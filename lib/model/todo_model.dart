@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo_app/model/date_time.dart';
+import 'package:todo_app/model/date_time_model.dart';
 import 'package:uuid/uuid.dart';
 
 @immutable
 class ToDo {
   final String id;
   final String description;
-  final bool isComplete;
   final String dateTime;
+  final bool isComplete;
   ToDo({
     String? id,
     required this.description,

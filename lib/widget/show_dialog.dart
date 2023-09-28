@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:todo_app/model/date_time.dart';
+import 'package:todo_app/model/date_time_model.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/theme/provider/app_theme_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -30,13 +30,8 @@ Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
             children: [
               TextField(
                 controller: _descriptionController,
-                decoration: InputDecoration(
-                  label: Text(
-                    "Enter the description here.....",
-                    style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
-                    ),
-                  ),
+                decoration: const InputDecoration(
+                  hintText: "Enter the description here....",
                 ),
                 onChanged: (value) => description = value,
               )

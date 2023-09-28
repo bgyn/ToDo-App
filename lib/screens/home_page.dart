@@ -9,7 +9,7 @@ import 'package:todo_app/widget/todo_list.dart';
 enum TodoStatus {
   all,
   completed,
-  noCompleted,
+  notCompleted,
 }
 
 final todoStatusProvider = StateProvider<TodoStatus>((_) => TodoStatus.all);
@@ -74,7 +74,7 @@ class HomePage extends ConsumerWidget {
                       return ToDoList(provdier: allTodoProvider);
                     case TodoStatus.completed:
                       return ToDoList(provdier: completedToDoProvider);
-                    case TodoStatus.noCompleted:
+                    case TodoStatus.notCompleted:
                       return ToDoList(provdier: notCompletedToDoProvider);
                   }
                 },
