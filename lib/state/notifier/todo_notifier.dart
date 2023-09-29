@@ -3,8 +3,15 @@ import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/utils/database_helper.dart';
 
 class ToDoNotifier extends StateNotifier<List<ToDo>> {
+  List<ToDo>? todo;
   final DatabaseHelper _databaseHelper = DatabaseHelper();
-  ToDoNotifier([List<ToDo>? todo]) : super(todo ?? <ToDo>[]);
+  ToDoNotifier([this.todo]) : super(todo ?? <ToDo>[]) {
+    _getToDoList();
+  }
+
+  Future<void> _getToDoList() async {
+    state = await _databaseHelper.getTodoList();
+  }
 
   Future<void> insert(ToDo todo) async {
     final result = await _databaseHelper.insertTodo(todo);

@@ -4,27 +4,13 @@ class ToDo {
   String? date;
   bool? isComplete = false;
   ToDo({
+    int? id,
     required this.description,
     bool? isComplete,
     required this.date,
-    int? id,
   });
 
-  ToDo copy(bool isComplete) => ToDo(
-      id: id, description: description, isComplete: isComplete, date: date);
-
-  ToDo update({String? description, String? date}) => ToDo(
-        id: id,
-        description: description ?? this.description,
-        isComplete: isComplete,
-        date: date ?? this.date,
-      );
-
-  @override
-  bool operator ==(covariant ToDo other) => id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
+  int? getId() => id;
 
   Map<String, dynamic> toMap() {
     final map = <String, dynamic>{};
@@ -32,8 +18,10 @@ class ToDo {
       map['id'] = id;
     }
     map['description'] = description;
-    if (isComplete == null) {
+    if (isComplete == false) {
       map['isComplete'] = 'false';
+    } else {
+      map['isComplete'] = 'true';
     }
     map['date'] = date;
     return map;
@@ -50,5 +38,3 @@ class ToDo {
     date = map['date'];
   }
 }
-
-//stateNotifier

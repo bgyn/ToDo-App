@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo_app/model/todo_model.dart';
@@ -9,10 +10,10 @@ class DatabaseHelper {
   static Database? _database;
 
   //database attribute
-  final String _todoTable = 'todo_table';
-  final String _colId = 'id';
-  final String _colDescription = 'description';
-  final String _colIsComplete = 'isComplete';
+  final String todoTable = 'todo_table';
+  final String colId = 'id';
+  final String colDescription = 'description';
+  final String colIsComplete = 'isComplete';
   final String _colDate = 'date';
 
   DatabaseHelper._createInstance();
@@ -38,19 +39,18 @@ class DatabaseHelper {
         await openDatabase(path, version: 1, onCreate: _createDb);
     return todoDatabase;
   }
-  //open/create database at given path
 
   //create Database
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $_todoTable($_colId INTEGER PRIMARY KEY AUTOINCREMENT ,$_colDescription TEXT,$_colIsComplete TEXT,$_colDate TEXT)');
+        'CREATE TABLE $todoTable($colId TEXT PRIMARY KEY ,$colDescription TEXT,$colIsComplete TEXT,$_colDate TEXT)');
   }
 
   //fetch operationj
   Future<List<Map<String, dynamic>>> getToDoMapList() async {
     Database db = await getDatabase;
     final result = await db.query(
-      _todoTable,
+      todoTable,
     );
     return result;
   }
@@ -58,15 +58,18 @@ class DatabaseHelper {
   //insert operation
   Future<int> insertTodo(ToDo todo) async {
     Database db = await getDatabase;
-    final result = await db.insert(_todoTable, todo.toMap());
+    final result = await db.insert(todoTable, todo.toMap());
     return result;
   }
 
   //update operation
   Future<int> updateTodo(ToDo todo) async {
     Database db = await getDatabase;
-    final result = await db.update(_todoTable, todo.toMap(),
-        where: '$_colId = ? ', whereArgs: [todo.id]);
+    final result = await db.update(todoTable, todo.toMap(),
+        where: '$colId = ?', whereArgs: [todo.getId()]);
+    if (kDebugMode) {
+      print('$result');
+    }
     return result;
   }
 
@@ -74,7 +77,7 @@ class DatabaseHelper {
   Future<int> deleteTodo(int? id) async {
     Database db = await getDatabase;
     final result =
-        await db.rawDelete('DELETE FROM $_todoTable where $_colId = $id');
+        await db.rawDelete('DELETE FROM $todoTable where $colId = $id');
     return result;
   }
 
@@ -82,7 +85,7 @@ class DatabaseHelper {
   Future<int> getCount() async {
     Database db = await getDatabase;
     List<Map<String, dynamic>> x =
-        await db.rawQuery('SELECT COUNT (*) FROM $_todoTable');
+        await db.rawQuery('SELECT COUNT (*) FROM $todoTable');
     int? result = Sqflite.firstIntValue(x);
     return result!;
   }

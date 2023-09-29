@@ -48,15 +48,15 @@ Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
                 if (description != null) {
                   //updating existing todo
                   if (existingToDo != null) {
-                    final newToDo =
-                        existingToDo.update(description: description);
+                    existingToDo.description = description;
+                    final newToDo = existingToDo;
                     Navigator.of(context).pop(newToDo);
                   }
                   //creating new todo
                   else {
                     Navigator.of(context).pop(
                       ToDo(
-                        description: description!,
+                        description: description,
                         date: getDateTime(),
                       ),
                     );

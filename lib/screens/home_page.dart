@@ -21,8 +21,8 @@ final allTodoProvider =
 final completedToDoProvider = Provider<Iterable<ToDo>>(
     (ref) => ref.watch(allTodoProvider).where((todo) => todo.isComplete!));
 
-final notCompletedToDoProvider = Provider<Iterable<ToDo>>(
-    (ref) => ref.watch(allTodoProvider).where((todo) => todo.isComplete!));
+final notCompletedToDoProvider = Provider<Iterable<ToDo>>((ref) =>
+    ref.watch(allTodoProvider).where((todo) => todo.isComplete! == false));
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
