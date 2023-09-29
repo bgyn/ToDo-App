@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo_app/model/todo_model.dart';
@@ -67,9 +66,6 @@ class DatabaseHelper {
     Database db = await getDatabase;
     final result = await db.update(todoTable, todo.toMap(),
         where: '$colId = ?', whereArgs: [todo.getId()]);
-    if (kDebugMode) {
-      print('$result');
-    }
     return result;
   }
 
