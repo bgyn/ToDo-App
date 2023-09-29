@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/model/todo_model.dart';
+import 'package:todo_app/state/notifier/todo_notifier.dart';
 import 'package:todo_app/theme/provider/app_theme_provider.dart';
 import 'package:todo_app/widget/show_dialog.dart';
 import 'package:todo_app/widget/status_filter.dart';
@@ -18,10 +19,10 @@ final allTodoProvider =
     StateNotifierProvider<ToDoNotifier, List<ToDo>>((_) => ToDoNotifier());
 
 final completedToDoProvider = Provider<Iterable<ToDo>>(
-    (ref) => ref.watch(allTodoProvider).where((todo) => todo.isComplete));
+    (ref) => ref.watch(allTodoProvider).where((todo) => todo.isComplete!));
 
 final notCompletedToDoProvider = Provider<Iterable<ToDo>>(
-    (ref) => ref.watch(allTodoProvider).where((todo) => !todo.isComplete));
+    (ref) => ref.watch(allTodoProvider).where((todo) => todo.isComplete!));
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -68,14 +69,15 @@ class HomePage extends ConsumerWidget {
               const StatusFilter(),
               Consumer(
                 builder: (context, ref, child) {
-                  final filter = ref.watch(todoStatusProvider);
+                  ref.watch(todoStatusProvider);
+                  final filter = ref.read(todoStatusProvider);
                   switch (filter) {
                     case TodoStatus.all:
-                      return ToDoList(provdier: allTodoProvider);
+                      return ToDoList(provider: allTodoProvider);
                     case TodoStatus.completed:
-                      return ToDoList(provdier: completedToDoProvider);
+                      return ToDoList(provider: completedToDoProvider);
                     case TodoStatus.notCompleted:
-                      return ToDoList(provdier: notCompletedToDoProvider);
+                      return ToDoList(provider: notCompletedToDoProvider);
                   }
                 },
               ),
@@ -92,7 +94,7 @@ class HomePage extends ConsumerWidget {
           onPressed: () async {
             final todo = await createOrEditToDO(context);
             if (todo != null) {
-              ref.read(allTodoProvider.notifier).add(todo);
+              ref.watch(allTodoProvider.notifier).insert(todo);
             }
           },
           icon: const Icon(

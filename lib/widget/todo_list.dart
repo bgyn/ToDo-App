@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/model/todo_model.dart';
@@ -6,12 +7,12 @@ import 'package:todo_app/theme/provider/app_theme_provider.dart';
 import 'package:todo_app/widget/show_dialog.dart';
 
 class ToDoList extends ConsumerWidget {
-  final AlwaysAliveProviderBase<Iterable<ToDo>> provdier;
-  const ToDoList({super.key, required this.provdier});
+  final AlwaysAliveProviderBase<Iterable<ToDo>> provider;
+  const ToDoList({super.key, required this.provider});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(provdier);
+    final todos = ref.watch(provider);
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.all(10),
@@ -21,16 +22,16 @@ class ToDoList extends ConsumerWidget {
           return GestureDetector(onTap: () async {
             final updatedToDo = await createOrEditToDO(context, todo);
             if (updatedToDo != null) {
-              ref.read(allTodoProvider.notifier).edit(updatedToDo);
+              ref.read(allTodoProvider.notifier).update(updatedToDo);
             }
           }, child: Consumer(builder: ((context, ref, child) {
             final isDarkMode = ref.watch(appThemeProvider);
             ref.watch(allTodoProvider);
             return Dismissible(
-              key: ValueKey(todo.id),
+              key: UniqueKey(),
               direction: DismissDirection.endToStart,
               onDismissed: (direction) {
-                ref.read(allTodoProvider.notifier).remove(todo);
+                ref.read(allTodoProvider.notifier).delete(todo);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
@@ -41,8 +42,8 @@ class ToDoList extends ConsumerWidget {
                   ),
                   child: ListTile(
                     title: Text(
-                      todo.description,
-                      style: todo.isComplete
+                      todo.description!,
+                      style: todo.isComplete!
                           ? Theme.of(context).textTheme.titleMedium?.copyWith(
                                 decoration: TextDecoration.lineThrough,
                                 fontSize: 16,
@@ -53,7 +54,7 @@ class ToDoList extends ConsumerWidget {
                               ),
                     ),
                     subtitle: Text(
-                      todo.dateTime,
+                      todo.date!,
                       style: Theme.of(context)
                           .textTheme
                           .titleMedium
@@ -61,12 +62,11 @@ class ToDoList extends ConsumerWidget {
                     ),
                     trailing: IconButton(
                       onPressed: () {
-                        final isComplete = !todo.isComplete;
-                        ref
-                            .read(allTodoProvider.notifier)
-                            .update(todo, isComplete);
+                        ref.read(allTodoProvider.notifier).update(
+                              todo,
+                            );
                       },
-                      icon: todo.isComplete
+                      icon: todo.isComplete!
                           ? Icon(
                               Icons.check_box,
                               color: isDarkMode ? Colors.white : Colors.black,

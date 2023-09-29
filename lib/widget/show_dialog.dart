@@ -3,9 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_app/model/date_time_model.dart';
 import 'package:todo_app/model/todo_model.dart';
 import 'package:todo_app/theme/provider/app_theme_provider.dart';
-import 'package:uuid/uuid.dart';
 
-const _uuid = Uuid();
 final _descriptionController = TextEditingController();
 
 Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
@@ -58,9 +56,8 @@ Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
                   else {
                     Navigator.of(context).pop(
                       ToDo(
-                        id: _uuid.v4(),
                         description: description!,
-                        dateTime: getDateTime(),
+                        date: getDateTime(),
                       ),
                     );
                   }
