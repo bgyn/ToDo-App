@@ -6,7 +6,7 @@ import 'package:todo_app/theme/provider/app_theme_provider.dart';
 
 final _descriptionController = TextEditingController();
 
-Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
+Future<ToDo?> createOrEditToDO(BuildContext context, String title,[ToDo? existingToDo]) {
   String? description = existingToDo?.description;
   _descriptionController.text = description ?? "";
   return showDialog(
@@ -18,7 +18,7 @@ Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
           backgroundColor:
               isDarkMode ? const Color.fromARGB(255, 41, 41, 41) : Colors.white,
           title: Text(
-            "Create a ToDo",
+            title,
             style: TextStyle(
               color: isDarkMode ? Colors.white : Colors.black,
             ),
@@ -30,6 +30,9 @@ Future<ToDo?> createOrEditToDO(BuildContext context, [ToDo? existingToDo]) {
                 controller: _descriptionController,
                 decoration: const InputDecoration(
                   hintText: "Enter the description here....",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(),
+                  ),
                 ),
                 onChanged: (value) => description = value,
               )

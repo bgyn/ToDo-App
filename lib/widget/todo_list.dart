@@ -20,7 +20,7 @@ class ToDoList extends ConsumerWidget {
           final todo = todos.elementAt(index);
           return GestureDetector(
             onTap: () async {
-              final updatedToDo = await createOrEditToDO(context, todo);
+              final updatedToDo = await createOrEditToDO(context, 'Edit Todo',todo);
               if (updatedToDo != null) {
                 ref.watch(allTodoProvider.notifier).update(updatedToDo);
               }

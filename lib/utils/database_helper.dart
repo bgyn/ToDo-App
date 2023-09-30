@@ -91,7 +91,7 @@ class DatabaseHelper {
     final todoMapList = await getToDoMapList();
     int count = await getCount();
     List<ToDo> todoList = List<ToDo>.empty(growable: true);
-    for (int i = 0; i < count; i++) {
+    for (int i = count - 1; i >= 0; i--) {
       todoList.add(ToDo.fromMapObject(todoMapList[i]));
     }
     return todoList;
