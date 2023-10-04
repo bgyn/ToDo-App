@@ -6,7 +6,8 @@ import 'package:todo_app/theme/provider/app_theme_provider.dart';
 
 final _descriptionController = TextEditingController();
 
-Future<ToDo?> createOrEditToDO(BuildContext context, String title,[ToDo? existingToDo]) {
+Future<ToDo?> createOrEditToDO(BuildContext context, String title,
+    [ToDo? existingToDo]) {
   String? description = existingToDo?.description;
   _descriptionController.text = description ?? "";
   return showDialog(
@@ -52,6 +53,7 @@ Future<ToDo?> createOrEditToDO(BuildContext context, String title,[ToDo? existin
                   //updating existing todo
                   if (existingToDo != null) {
                     existingToDo.description = description;
+                    existingToDo.date = getDateTime();
                     final newToDo = existingToDo;
                     Navigator.of(context).pop(newToDo);
                   }
